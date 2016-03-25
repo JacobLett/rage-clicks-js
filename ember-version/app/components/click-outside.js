@@ -2,7 +2,7 @@ import Ember from 'ember';
 import ClickOutside from '../mixins/click-outside';
 import layout from '../templates/components/click-outside';
 import $ from 'jquery';
-const { Component, on } = Ember;
+const { on } = Ember;
 const { next } = Ember.run;
 
 var clk_events = [];
@@ -11,8 +11,8 @@ var possible_click = 5;
 
 export default Ember.Component.extend(ClickOutside, {
   layout,
-  onDetectEvent(){
-    this.sendAction();
+  onDetectEvent(result){
+    this.sendAction(result);
   },
   clickOutside(e) {
     const exceptSelector = this.attrs['except-selector'];
@@ -34,7 +34,7 @@ export default Ember.Component.extend(ClickOutside, {
       if(result != null){
         console.log(result);
         this.removeUsedClickPoints(3);
-        this.onDetectEvent();
+        this.onDetectEvent(result);
 
         // drawClickEvent(3);
       }
@@ -59,7 +59,9 @@ export default Ember.Component.extend(ClickOutside, {
     var last = clk_events.length - 1;
     var timeDiff = (clk_events[last].time.getTime() - clk_events[last - count + 1].time.getTime()) / 1000;
     //returns false if it event period is longer than 5 sec
-    if(timeDiff > interval) return null;
+    if(timeDiff > interval) {
+      return null;
+    }
 
     //check click distance
     var max_distance = 0;
@@ -67,11 +69,20 @@ export default Ember.Component.extend(ClickOutside, {
       for(var j = i + 1; j <= last; j++){
         var distance = Math.round(Math.sqrt(Math.pow(clk_events[i].event.clientX - clk_events[j].event.clientX, 2) +
                                       Math.pow(clk_events[i].event.clientY - clk_events[j].event.clientY, 2)));
-        if(distance > max_distance) max_distance = distance;
-        if(distance > radius) return null;
+        if(distance > max_distance) {
+          max_distance = distance;
+        }
+        if(distance > radius) {
+          return null;
+        }
       }
     }
-    return "Clicks: " + count + ", Range: " + max_distance + "px, Period: " + timeDiff + " Sec";
+    var result = {};
+    result.count = count;
+    result.maxDistance = max_distance;
+    result.actionPeriod = timeDiff;
+    result.points = [clk_events[i - 2], clk_events[i - 1], clk_events[i]];
+    return result;
   },
 
   removeUsedClickPoints: function(count){
