@@ -6,15 +6,13 @@ const { Component, on } = Ember;
 const { next } = Ember.run;
 
 var clk_events = [];
-var radius = 100;//certain circle area 
+var radius = 100;//certain circle area
 var possible_click = 5;
 
 export default Ember.Component.extend(ClickOutside, {
   layout,
-  actions:{
-    sendAction(){
-      this.get('onDetectEvent')();
-    }
+  onDetectEvent(){
+    this.sendAction();
   },
   clickOutside(e) {
     const exceptSelector = this.attrs['except-selector'];
@@ -36,7 +34,7 @@ export default Ember.Component.extend(ClickOutside, {
       if(result != null){
         console.log(result);
         this.removeUsedClickPoints(3);
-        this.actions.sendAction();
+        this.onDetectEvent();
 
         // drawClickEvent(3);
       }
@@ -44,7 +42,7 @@ export default Ember.Component.extend(ClickOutside, {
     // console.log(event.pageX, event.pageY);
     // console.log(clk_events.length);
     // console.log(e.clientX, e.clientY);
-    
+
   },
 
   _attachClickOutsideHandler: on('didInsertElement', function() {
@@ -67,7 +65,7 @@ export default Ember.Component.extend(ClickOutside, {
     var max_distance = 0;
     for(var i = last - count + 1; i < last; i++){
       for(var j = i + 1; j <= last; j++){
-        var distance = Math.round(Math.sqrt(Math.pow(clk_events[i].event.clientX - clk_events[j].event.clientX, 2) + 
+        var distance = Math.round(Math.sqrt(Math.pow(clk_events[i].event.clientX - clk_events[j].event.clientX, 2) +
                                       Math.pow(clk_events[i].event.clientY - clk_events[j].event.clientY, 2)));
         if(distance > max_distance) max_distance = distance;
         if(distance > radius) return null;

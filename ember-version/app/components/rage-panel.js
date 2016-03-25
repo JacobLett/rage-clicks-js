@@ -4,8 +4,8 @@ export default Ember.Component.extend({
 
 	tagName: 'canvas',
 	actions: {
-		onDetectEvent(){
-			console.log("Detected");
+		rageClickHandler(){
+			console.log("Rage Click Detected");
 		}
 	},
 	quader: function () {
