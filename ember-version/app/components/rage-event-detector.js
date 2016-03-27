@@ -1,20 +1,20 @@
 import Ember from 'ember';
-import ClickOutside from '../mixins/click-outside';
-import layout from '../templates/components/click-outside';
+import RageEventDetector from '../mixins/rage-event-detector';
+import layout from '../templates/components/rage-event-detector';
 import $ from 'jquery';
 const { on } = Ember;
 const { next } = Ember.run;
 
 var clk_events = [];
-var radius = 100;//certain circle area
+var radius = 200;//certain circle area
 var possible_click = 5;
 
-export default Ember.Component.extend(ClickOutside, {
+export default Ember.Component.extend(RageEventDetector, {
   layout,
   onDetectEvent(result){
     this.sendAction(result);
   },
-  clickOutside(e) {
+  rageEventDetector(e) {
     const exceptSelector = this.attrs['except-selector'];
     if (exceptSelector && $(e.target).closest(exceptSelector).length > 0) {
       return;
@@ -45,12 +45,12 @@ export default Ember.Component.extend(ClickOutside, {
 
   },
 
-  _attachClickOutsideHandler: on('didInsertElement', function() {
-    next(this, this.addClickOutsideListener);
+  _attachRageEventDetectorHandler: on('didInsertElement', function() {
+    next(this, this.addRageClickListener);
   }),
 
-  _removeClickOutsideHandler: on('willDestroyElement', function() {
-    this.removeClickOutsideListener();
+  _removeRageEventDetectorHandler: on('willDestroyElement', function() {
+    this.removeRageClickListener();
   }),
   clk_events : [],
   radius: 100,

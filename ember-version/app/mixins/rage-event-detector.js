@@ -9,24 +9,24 @@ const bound = function(fnName) {
 };
 
 export default Ember.Mixin.create({
-  clickOutside: K,
-  clickHandler: bound('outsideClickHandler'),
+  rageEventDetector: K,
+  clickHandler: bound('rageClickHandler'),
 
-  outsideClickHandler(e) {
+  rageClickHandler(e) {
     const element = this.get('element');
     const $target = $(e.target);
     const isInside = $target.closest(element).length === 1;
     if (!isInside) {
-      this.clickOutside(e);
+      this.rageEventDetector(e);
     }
   },
 
-  addClickOutsideListener() {
+  addRageClickListener() {
     const clickHandler = this.get('clickHandler');
     $(window).on('click', clickHandler);
   },
 
-  removeClickOutsideListener() {
+  removeRageClickListener() {
     const clickHandler = this.get('clickHandler');
     $(window).off('click', clickHandler);
   }
