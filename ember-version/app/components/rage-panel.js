@@ -5,7 +5,7 @@ export default Ember.Component.extend({
 	tagName: 'canvas',
 	actions: {
 		rageClickHandler(param){
-			console.log("Rage Click Detected", param);
+			Ember.Logger.log("Rage Click Detected", param);
 			this.drawClickEvent(param.points);
 		}
 	},
