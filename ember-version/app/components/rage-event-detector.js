@@ -17,20 +17,20 @@ export default Ember.Component.extend(RageEventDetector, {
       return;
     }
 
-    const clkEvnets = this.get("clkEvnets");
+    const clkEvents = this.get("clkEvents");
     var possibleClick = this.get("possibleClick");
 
-    clkEvnets.push({
+    clkEvents.push({
       event: e,
       time: new Date()
     });
 
     //remain only required number of click events and remove left of them.
-    if(clkEvnets.length > possibleClick){
-      clkEvnets.splice(0, clkEvnets.length - possibleClick);
+    if(clkEvents.length > possibleClick){
+      clkEvents.splice(0, clkEvents.length - possibleClick);
     }
     //detect 3 click in 5 sec
-    if(clkEvnets.length >= 3){
+    if(clkEvents.length >= 3){
       var result = this.detectTripleClick(3, 5);
       if(result != null){
         Ember.Logger.log(result);
@@ -38,7 +38,7 @@ export default Ember.Component.extend(RageEventDetector, {
         this.onDetectEvent(result);
       }
     }
-    this.set("clkEvnets", clkEvnets);
+    this.set("clkEvents", clkEvents);
 
   },
 
@@ -49,15 +49,15 @@ export default Ember.Component.extend(RageEventDetector, {
   _removeRageEventDetectorHandler: on('willDestroyElement', function() {
     this.removeRageClickListener();
   }),
-  clkEvnets : [],
+  clkEvents : [],
   radius: 100,
   possibleClick : 5,
   detectTripleClick: function(count, interval){
-    const clkEvnets = this.get("clkEvnets");
+    const clkEvents = this.get("clkEvents");
     var radius = this.get("radius");
-    var last = clkEvnets.length - 1;
+    var last = clkEvents.length - 1;
     
-    var timeDiff = (clkEvnets[last].time.getTime() - clkEvnets[last - count + 1].time.getTime()) / 1000;
+    var timeDiff = (clkEvents[last].time.getTime() - clkEvents[last - count + 1].time.getTime()) / 1000;
     //returns false if it event period is longer than 5 sec
     if(timeDiff > interval) {
       return null;
@@ -67,8 +67,8 @@ export default Ember.Component.extend(RageEventDetector, {
     var maxDistance = 0;
     for(var i = last - count + 1; i < last; i++){
       for(var j = i + 1; j <= last; j++){
-        var distance = Math.round(Math.sqrt(Math.pow(clkEvnets[i].event.clientX - clkEvnets[j].event.clientX, 2) +
-                                      Math.pow(clkEvnets[i].event.clientY - clkEvnets[j].event.clientY, 2)));
+        var distance = Math.round(Math.sqrt(Math.pow(clkEvents[i].event.clientX - clkEvents[j].event.clientX, 2) +
+                                      Math.pow(clkEvents[i].event.clientY - clkEvents[j].event.clientY, 2)));
         if(distance > maxDistance) {
           maxDistance = distance;
         }
@@ -81,14 +81,14 @@ export default Ember.Component.extend(RageEventDetector, {
     result.count = count;
     result.maxDistance = maxDistance;
     result.actionPeriod = timeDiff;
-    result.points = [clkEvnets[i - 2], clkEvnets[i - 1], clkEvnets[i]];
+    result.points = [clkEvents[i - 2], clkEvents[i - 1], clkEvents[i]];
     return result;
   },
 
   removeUsedClickPoints: function(count){
-    const clkEvnets = this.get("clkEvnets");
-    clkEvnets.splice(clkEvnets.length - count, count);
-    this.set("clkEvnets", clkEvnets);
+    const clkEvents = this.get("clkEvents");
+    clkEvents.splice(clkEvents.length - count, count);
+    this.set("clkEvents", clkEvents);
   }
 
 });
