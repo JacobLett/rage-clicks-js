@@ -23,11 +23,15 @@ console.log("document is ready");
 			}
 		}
 		console.log(event.pageX, event.pageY);
-		if(rageMode){
-			console.log(' rage');
-		}
+
 	})
 
+	
+			if(rageMode){
+			console.log(' rage');
+		}
+	
+	
 	function detect3Click(count, interval){
 		var last = clk_events.length - 1;
 		var timeDiff = (clk_events[last].time.getTime() - clk_events[last - count + 1].time.getTime()) / 1000;
