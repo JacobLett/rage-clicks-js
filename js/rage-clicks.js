@@ -17,7 +17,7 @@ console.log("document is ready");
 		if(clk_events.length >= 3){
 			var result = detect3Click(3, 5);
 			if(result != null){
-				console.log(result);
+				console.log(result + 'triple click');
 			}
 		}
 		console.log(event.pageX, event.pageY);
