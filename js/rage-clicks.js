@@ -4,7 +4,26 @@ console.log("document is ready");
   	var clk_events = [];
 	var radius = 100;//certain circle area 
 	var possible_click = 5;
-	rageMode;
+	rageMode = false;
+  
+  
+  
+  var something = (function() {
+    var executed = false;
+    return function() {
+        if (!executed) {
+            executed = true;
+            // do something
+          console.log(' rage');
+          
+        }
+    };
+})();
+
+
+  
+  
+  
 	$("body").click(function(event){
 		clk_events.push({
 			event: event,
@@ -19,16 +38,16 @@ console.log("document is ready");
 			var result = detect3Click(3, 5);
 			if(result != null){
 				console.log(result + ' triple click');
-				rageMode = true;
+				something();
 				
 			}
 		}
 		console.log(event.pageX, event.pageY);
 		
 		if(rageMode){
-			console.log(' rage');
+			
 			delete rageMode;
-		}
+		} else {}
 	
 		
 		
