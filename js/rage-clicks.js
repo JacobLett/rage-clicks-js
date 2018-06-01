@@ -1,5 +1,7 @@
-$(document).ready(function(){
-	var clk_events = [];
+$(document).ready(function() {
+ // executes when HTML-Document is loaded and DOM is ready
+console.log("document is ready");
+  	var clk_events = [];
 	var radius = 100;//certain circle area 
 	var possible_click = 5;
 	$("body").click(function(event){
@@ -16,8 +18,6 @@ $(document).ready(function(){
 			var result = detect3Click(3, 5);
 			if(result != null){
 				console.log(result);
-				drawClickEvent(3);
-				removeUsedClickPoints(3);
 			}
 		}
 		console.log(event.pageX, event.pageY);
@@ -42,38 +42,18 @@ $(document).ready(function(){
 		return "Clicks: " + count + ", Range: " + max_distance + "px, Period: " + timeDiff + " Sec";
 	}
 
-	function removeUsedClickPoints(count){
-		clk_events.splice(clk_events.length - count, count);
-	}
 
-	//Canvas for test purpose
-	var canvas  = document.getElementById("test_canvas");
-	canvas.width = $("body").width();
-	canvas.height = $("body").height();
-	var canvasWidth = canvas.width;
-	var canvasHeight = canvas.height;
-	console.log(canvasWidth, canvasHeight);
-	var ctx = canvas.getContext("2d");
+  
+
+  
 	
 
-	function drawClickEvent(count){
-		var last = clk_events.length - 1;
-		ctx.strokeStyle=getRandomColor();
-		ctx.beginPath();
-		ctx.moveTo(clk_events[last-count+1].event.clientX, clk_events[last-count+1].event.clientY);
-		for(i = last - count + 2; i <= last; i++){
-			ctx.lineTo(clk_events[i].event.clientX, clk_events[i].event.clientY);
-		}
-		ctx.lineTo(clk_events[last-count+1].event.clientX, clk_events[last-count+1].event.clientY);
-		ctx.stroke();
-	}
 
-	function getRandomColor() {
-	    var letters = '0123456789ABCDEF'.split('');
-	    var color = '#';
-	    for (var i = 0; i < 6; i++ ) {
-	        color += letters[Math.floor(Math.random() * 16)];
-	    }
-	    return color;
-	}
-})
+  
+
+
+  
+  
+// document ready  
+});
+
